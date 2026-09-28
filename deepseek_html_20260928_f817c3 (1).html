@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Новогодняя коллекция 2026 | Гипсовые фигурки</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --accent: #e74c3c;
+            --bg: #f8f9fa;
+            --card-bg: #ffffff;
+            --text: #333;
+            --text-light: #777;
+            --shadow: 0 4px 20px rgba(0,0,0,0.06);
+            --shadow-hover: 0 10px 30px rgba(0,0,0,0.12);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        /* Шапка */
+        header {
+            background-color: #ffffff;
+            text-align: center;
+            padding: 40px 20px;
+            border-bottom: 1px solid #eee;
+        }
+        header h1 {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 10px;
+            letter-spacing: -0.5px;
+        }
+        header p {
+            color: var(--text-light);
+            font-size: 16px;
+            font-weight: 300;
+            max-width: 600px;
+            margin: 0 auto 15px;
+        }
+        .price-badge {
+            display: inline-block;
+            background-color: var(--accent);
+            color: white;
+            padding: 8px 24px;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 16px;
+            letter-spacing: 0.5px;
+            box-shadow: 0 4px 15px rgba(231, 76, 60, 0.3);
+        }
+
+        /* Сетка каталога */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 30px;
+        }
+
+        /* Карточка товара */
+        .card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-hover);
+        }
+        .card-img-wrapper {
+            width: 100%;
+            height: 260px;
+            overflow: hidden;
+            background-color: #f0f0f0;
+        }
+        .card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        .card:hover img {
+            transform: scale(1.05);
+        }
+        .card-content {
+            padding: 20px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .card-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 10px;
+            line-height: 1.3;
+        }
+        .card-price {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--accent);
+        }
+
+        /* Модальное окно */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(5px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition);
+            z-index: 1000;
+            padding: 20px;
+        }
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        .modal {
+            background: var(--card-bg);
+            border-radius: 20px;
+            max-width: 800px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            transform: scale(0.9);
+            transition: var(--transition);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+        }
+        .modal-overlay.active .modal {
+            transform: scale(1);
+        }
+        .modal-close {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            background: rgba(255,255,255,0.9);
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            font-size: 24px;
+            line-height: 1;
+            cursor: pointer;
+            color: #333;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+            z-index: 10;
+        }
+        .modal-close:hover {
+            background: var(--accent);
+            color: white;
+            transform: rotate(90deg);
+        }
+        .modal-body {
+            display: flex;
+            flex-direction: column;
+        }
+        @media (min-width: 768px) {
+            .modal-body {
+                flex-direction: row;
+            }
+        }
+        .modal-image {
+            flex: 1;
+            min-height: 300px;
+            background: #f4f4f4;
+        }
+        .modal-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+        .modal-info {
+            flex: 1;
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .modal-info h2 {
+            font-size: 24px;
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+        .modal-info .modal-price {
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--accent);
+            margin-bottom: 20px;
+        }
+        .modal-info p {
+            color: var(--text-light);
+            font-size: 15px;
+            margin-bottom: 25px;
+        }
+        
+        /* Кнопки в модальном окне */
+        .modal-actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .modal-btn {
+            display: inline-block;
+            color: white;
+            text-align: center;
+            padding: 14px 20px;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: var(--transition);
+            border: none;
+            cursor: pointer;
+            font-size: 15px;
+            flex: 1;
+            min-width: 140px;
+        }
+        .modal-btn.telegram {
+            background-color: #0088cc;
+        }
+        .modal-btn.telegram:hover {
+            background-color: #006699;
+        }
+        .modal-btn.max {
+            background-color: #6e40aa;
+        }
+        .modal-btn.max:hover {
+            background-color: #553388;
+        }
+
+        /* Подвал */
+        footer {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--text-light);
+            font-size: 14px;
+            border-top: 1px solid #eee;
+            margin-top: 40px;
+        }
+        footer p {
+            margin: 5px 0;
+        }
+        .footer-links {
+            margin-top: 15px;
+        }
+        .footer-links a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+            margin: 0 10px;
+            transition: color 0.3s;
+        }
+        .footer-links a:hover {
+            color: var(--accent);
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>🎄 Новогодняя коллекция 2026</h1>
+        <p>Стильные заготовки из белоснежного гипса для вашего декора. Минимализм, который можно раскрасить или оставить в чистом виде.</p>
+        <div class="price-badge">Цена любой фигурки — 100 руб.</div>
+    </header>
+
+    <div class="container">
+        <div class="gallery" id="gallery">
+            <!-- Карточки будут добавлены через JavaScript -->
+        </div>
+    </div>
+
+    <!-- Модальное окно -->
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal">
+            <button class="modal-close" id="modalClose">&times;</button>
+            <div class="modal-body">
+                <div class="modal-image">
+                    <img src="" alt="" id="modalImg">
+                </div>
+                <div class="modal-info">
+                    <h2 id="modalTitle"></h2>
+                    <div class="modal-price" id="modalPrice"></div>
+                    <p id="modalDesc"></p>
+                    <div class="modal-actions">
+                        <a href="https://t.me/Dudukinat" target="_blank" class="modal-btn telegram">Написать в Telegram ✈️</a>
+                        <a href="https://max.ru/channel_gips_i_aromat" target="_blank" class="modal-btn max">Написать в MAX 💬</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 Новогодняя коллекция. Все права защищены.</p>
+        <p>Отправка через Озон или 5post. Для жителей Каменки — самовывоз.</p>
+        <div class="footer-links">
+            <a href="https://t.me/Dudukinat" target="_blank">Telegram</a>
+            <a href="https://max.ru/channel_gips_i_aromat" target="_blank">MAX</a>
+        </div>
+    </footer>
+
+    <script>
+        // Данные о товарах с обновленными именами файлов
+        const products = [
+            {
+                id: 1,
+                img: "photo_1_2026-09-28_14-29-27.jpg",
+                title: "Овечка / Козочка в платье-елочке",
+                price: "100 руб.",
+                desc: "Белоснежная гипсовая отливка в виде овечки в праздничном платье-елочке. Отличный вариант для декора или раскрашивания."
+            },
+            {
+                id: 2,
+                img: "photo_2_2026-09-28_14-29-27.jpg",
+                title: "Ретро-автомобиль с ёлочкой",
+                price: "100 руб.",
+                desc: "Стильный ретро-автомобиль с новогодней ёлочкой. Прекрасно подойдет для создания праздничных композиций."
+            },
+            {
+                id: 3,
+                img: "photo_3_2026-09-28_14-29-27.jpg",
+                title: "Набор рельефных сосулек (4 шт.)",
+                price: "100 руб.",
+                desc: "Набор из 4 рельефных сосулек. Идеально для украшения интерьера или елки."
+            },
+            {
+                id: 4,
+                img: "photo_4_2026-09-28_14-29-27.jpg",
+                title: "Набор резных звездочек и шаров (4 шт.)",
+                price: "100 руб.",
+                desc: "Набор из 4 ажурных звездочек и шаров. Тонкая работа, подчеркивающая красоту гипса."
+            },
+            {
+                id: 5,
+                img: "photo_5_2026-09-28_14-29-27.jpg",
+                title: "Винтажные часы «12 без пяти»",
+                price: "100 руб.",
+                desc: "Винтажные часы с надписью «12 без пяти». Символичный новогодний акцент для вашего дома."
+            },
+            {
+                id: 6,
+                img: "photo_6_2026-09-28_14-29-27.jpg",
+                title: "Скандинавский гномик с ёлочкой",
+                price: "100 руб.",
+                desc: "Очаровательный скандинавский гномик с ёлочкой. Тренд сезона в минималистичном исполнении."
+            },
+            {
+                id: 7,
+                img: "photo_7_2026-09-28_14-29-27.jpg",
+                title: "Ажурная снежинка",
+                price: "100 руб.",
+                desc: "Изящная ажурная снежинка. Прекрасный выбор для создания зимней атмосферы."
+            },
+            {
+                id: 8,
+                img: "photo_8_2026-09-28_14-29-27.jpg",
+                title: "Символ года — Козлик / Олененок",
+                price: "100 руб.",
+                desc: "Символ 2026 года. Милый козлик или олененок станет отличным подарком близким."
+            },
+            {
+                id: 9,
+                img: "photo_9_2026-09-28_14-29-27.jpg",
+                title: "Сердце с горным козлом",
+                price: "100 руб.",
+                desc: "Романтичное сердце с изображением горного козла. Необычный и стильный сувенир."
+            },
+            {
+                id: 10,
+                img: "photo_10_2026-09-28_14-29-27.jpg",
+                title: "Ангелочек-козочка",
+                price: "100 руб.",
+                desc: "Нежный ангелочек-козочка. Завершит вашу коллекцию новогодних фигурок."
+            }
+        ];
+
+        const gallery = document.getElementById('gallery');
+        const modalOverlay = document.getElementById('modalOverlay');
+        const modalClose = document.getElementById('modalClose');
+        const modalImg = document.getElementById('modalImg');
+        const modalTitle = document.getElementById('modalTitle');
+        const modalPrice = document.getElementById('modalPrice');
+        const modalDesc = document.getElementById('modalDesc');
+
+        // Генерация карточек
+        products.forEach(product => {
+            const card = document.createElement('div');
+            card.className = 'card';
+            card.innerHTML = `
+                <div class="card-img-wrapper">
+                    <img src="${product.img}" alt="${product.title}" loading="lazy">
+                </div>
+                <div class="card-content">
+                    <h3 class="card-title">${product.title}</h3>
+                    <p class="card-price">${product.price}</p>
+                </div>
+            `;
+            
+            // Обработчик клика по карточке
+            card.addEventListener('click', () => {
+                modalImg.src = product.img;
+                modalImg.alt = product.title;
+                modalTitle.textContent = product.title;
+                modalPrice.textContent = product.price;
+                modalDesc.textContent = product.desc;
+                modalOverlay.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            });
+
+            gallery.appendChild(card);
+        });
+
+        // Закрытие модального окна
+        function closeModal() {
+            modalOverlay.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        modalClose.addEventListener('click', closeModal);
+
+        modalOverlay.addEventListener('click', (e) => {
+            if (e.target === modalOverlay) {
+                closeModal();
+            }
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && modalOverlay.classList.contains('active')) {
+                closeModal();
+            }
+        });
+    </script>
+
+</body>
+</html>
